@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>사문 x 경제 OX 개념 파괴자</title>
+  <title>사문 x 경제 OX 개념 마스터</title>
   <style>
     :root {
       --primary-color: #4A90E2;
@@ -100,7 +100,6 @@
       margin-bottom: 0;
     }
 
-    /* Quiz Screen Styles */
     .quiz-header {
       display: flex;
       justify-content: space-between;
@@ -127,14 +126,14 @@
     }
 
     .question-box {
-      min-height: 140px;
+      min-height: 150px;
       display: flex;
       justify-content: center;
       align-items: center;
       background-color: #F8F9FA;
       border-radius: 12px;
       padding: 20px;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 600;
       line-height: 1.6;
       margin-bottom: 25px;
@@ -161,12 +160,11 @@
     .btn-o { background-color: #2ECC71; }
     .btn-x { background-color: #E74C3C; }
 
-    /* Modal Styles */
     .modal {
       display: none;
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.88);
       color: white;
       padding: 30px;
       flex-direction: column;
@@ -181,21 +179,21 @@
     }
 
     .result-icon {
-      font-size: 4rem;
+      font-size: 3.5rem;
       margin-bottom: 10px;
     }
 
     .explanation {
-      margin: 20px 0;
+      margin: 15px 0 20px 0;
       line-height: 1.6;
-      font-size: 1.05rem;
+      font-size: 1rem;
       word-break: keep-all;
       background: rgba(255,255,255,0.1);
       padding: 15px;
       border-radius: 10px;
+      text-align: left;
     }
 
-    /* Selection Highlighting */
     .option-btn.selected {
       border: 3px solid #2C3E50;
     }
@@ -206,29 +204,29 @@
   <div class="container">
     <div id="start-screen" class="screen active">
       <h1>📚 수능 개념 파괴자</h1>
-      <p>사회·문화 & 경제 핵심 기출 선지<br>OX 퀴즈로 타파하자!</p>
+      <p>사회·문화 & 경제 전단원 핵심 기출 선지<br>OX 퀴즈로 완전히 정복하자!</p>
       <button class="btn" onclick="goToScreen('subject-screen')">퀴즈 시작하기</button>
     </div>
 
     <div id="subject-screen" class="screen">
       <h1>과목 선택</h1>
       <p>도전할 과목을 선택하세요.</p>
-      <button class="btn btn-soc" onclick="selectSubject('soc')">사회·문화</button>
-      <button class="btn btn-econ" onclick="selectSubject('econ')">경 제</button>
+      <button class="btn btn-soc" onclick="selectSubject('soc')">사회·문화 (전단원)</button>
+      <button class="btn btn-econ" onclick="selectSubject('econ')">경 제 (전단원)</button>
     </div>
 
     <div id="setting-screen" class="screen">
       <h1 id="selected-subject-title">과목 설정</h1>
       
-      <p style="margin-bottom: 10px; text-align: left; font-weight: bold;">1. 범위 선택</p>
+      <p style="margin-bottom: 8px; text-align: left; font-weight: bold;">1. 범위 선택</p>
       <button class="btn btn-secondary option-btn selected" id="mode-all" onclick="selectMode('all')">전범위 통합 모드</button>
       <div id="unit-select-container" style="display:none; margin-bottom: 15px;">
-        <select id="unit-select" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc;">
-          </select>
+        <select id="unit-select" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size:0.95rem;">
+        </select>
       </div>
       <button class="btn btn-secondary" onclick="toggleUnitSelect()">단원별 선택하기</button>
 
-      <p style="margin-bottom: 10px; text-align: left; font-weight: bold; margin-top: 15px;">2. 제한 시간</p>
+      <p style="margin-bottom: 8px; text-align: left; font-weight: bold; margin-top: 15px;">2. 제한 시간</p>
       <div class="grid-btns">
         <button class="btn btn-secondary option-btn" id="time-10" onclick="selectTime(10)">10초</button>
         <button class="btn btn-secondary option-btn selected" id="time-15" onclick="selectTime(15)">15초</button>
@@ -240,7 +238,7 @@
     <div id="quiz-screen" class="screen">
       <div class="quiz-header">
         <span id="quiz-category">사회·문화</span>
-        <span id="quiz-progress">1 / 5</span>
+        <span id="quiz-progress">1 / 10</span>
       </div>
       <div class="timer-bar-container">
         <div id="timer-bar" class="timer-bar"></div>
@@ -275,34 +273,80 @@
   </div>
 
   <script>
-    // 퀴즈 데이터베이스
+    // 퀴즈 데이터베이스 (전단원 반영)
     const quizDB = {
       soc: {
         title: "사회·문화",
-        units: ["1단원: 사회·문화 현상의 탐구", "2단원: 개인과 사회 구조", "3단원: 문화와 사회"],
+        units: [
+          "1단원: 사회·문화 현상의 탐구",
+          "2단원: 개인과 사회 구조",
+          "3단원: 문화와 사회",
+          "4단원: 사회 계층과 불평등",
+          "5단원: 현대 사회와 사회 변동"
+        ],
         questions: [
+          // 1단원
           { unit: 0, q: "사회 실재론은 사회 문제를 해결하기 위해 제도 개선보다 개인의 의식 개혁을 강조한다.", a: "X", exp: "사회 실재론은 사회 구조 및 제도의 힘을 강조하므로 제도 개혁을 중시합니다. 개인 의식 개혁을 강조하는 것은 사회 개체론입니다." },
           { unit: 0, q: "자연 현상과 달리 사회·문화 현상은 개연성의 원리가 적용된다.", a: "O", exp: "자연 현상은 필연성과 확실성, 사회·문화 현상은 개연성과 확률성의 원리가 적용됩니다." },
-          { unit: 1, q: "자발적 결사체는 모두 비공식 조직에 해당한다.", a: "X", exp: "시민단체나 노동조합 같은 자발적 결사체는 공식 조직에 해당합니다. 비공식 조직은 공식 조직 내에 존재하는 자발적 결사체(동호회 등)에 한정됩니다." },
-          { unit: 2, q: "문화 상대주의는 타 문화를 평가할 때 절대적인 기준을 적용하는 태도이다.", a: "X", exp: "절대적인 기준을 적용하여 타 문화를 평가하는 것은 문화 자대주의(자문화/타문화 중심주의)입니다. 문화 상대주의는 해당 사회의 맥락에서 이해하는 태도입니다." }
+          { unit: 0, q: "질적 연구 방법은 방법론적 일원론에 기초하여 법칙 발견을 목적으로 한다.", a: "X", exp: "방법론적 일원론과 법칙 발견을 목적으로 하는 것은 양적 연구 방법입니다. 질적 연구는 방법론적 이원론에 기초하여 깊이 있는 이해를 목적으로 합니다." },
+          { unit: 0, q: "실험법은 양적 연구에서 주로 사용되며, 독립변인과 종속변인 간의 인과관계를 파악하기에 유리하다.", a: "O", exp: "실험법은 통제된 상황에서 변인 간 인과관계를 검증하는 양적 연구의 대표적 자료 수집 방법입니다." },
+
+          // 2단원
+          { unit: 1, q: "자발적 결사체는 모두 비공식 조직에 해당한다.", a: "X", exp: "시민단체나 노동조합 같은 자발적 결사체는 공식 조직입니다. 비공식 조직은 공식 조직 내에 존재하는 자발적 결사체(동호회 등)에 한정됩니다." },
+          { unit: 1, q: "귀속 지위는 개인의 노력이나 능력에 의해 후천적으로 획득되는 지위이다.", a: "X", exp: "개인의 노력으로 획득되는 것은 '성취 지위'입니다. 귀속 지위는 태어나면서 자연스럽게 갖게 되는 지위입니다." },
+          { unit: 1, q: "역할 갈등은 한 인물이 동시에 서로 다른 역할을 요구받아 충돌할 때 발생한다.", a: "O", exp: "역할 갈등은 두 가지 이상의 역할이 상충할 때 발생하는 심리적 갈등을 의미합니다." },
+          { unit: 1, q: "관료제 조직은 탈관료제 조직에 비해 과업의 표준화 및 신분 보장 정도가 높다.", a: "O", exp: "관료제는 서열화, 과업 표준화, 연공서열 및 신분 보장이 강화된 연계 구조를 가집니다." },
+
+          // 3단원
+          { unit: 2, q: "문화 상대주의는 타 문화를 평가할 때 절대적인 기준을 적용하는 태도이다.", a: "X", exp: "절대적 기준을 적용해 문화의 우열을 가리는 것은 문화 절대주의(자문화/타문화 중심주의)입니다. 상대주의는 해당 맥락에서 이해하려는 태도입니다." },
+          { unit: 2, q: "문화 변동 중 문화 접변의 결과로 고유 문화와 외래 문화가 융합되어 제3의 문화가 나타나는 것을 문화 병존이라 한다.", a: "X", exp: "고유 문화와 외래 문화가 결합해 제3의 문화가 형성되는 것은 '문화 융합'입니다. 문화 병존은 두 문화가 독립성을 유지하며 함께 존재하는 것입니다." },
+          { unit: 2, q: "반문화는 하위문화에 포함되며, 사회 변동을 촉진하는 계기가 되기도 한다.", a: "O", exp: "반문화는 특정 하위문화의 한 형태이며 기존 지배적 가치에 저항하여 사회 변동의 원동력이 될 수 있습니다." },
+
+          // 4단원
+          { unit: 3, q: "계급론(마르크스)은 사회 계층화 현상을 경제적 요인에 의해 단원론적으로 설명한다.", a: "O", exp: "마르크스의 계급론은 생산수단 소유 여부라는 경제적 단일 기준에 따라 사회를 이분법적으로 구분합니다." },
+          { unit: 3, q: "베버의 다원론적 계층론에 따르면 클래스(계급), 지위 집단, 정당은 반드시 일치한다.", a: "X", exp: "베버는 경제, 사회, 정치 영역이 불일치할 수 있는 '지위 불일치 현상'을 설명하였습니다." },
+          { unit: 3, q: "절대적 빈곤은 상위 소득 계층과의 상대적 비교를 통해 정의되는 개념이다.", a: "X", exp: "상위 계층과의 비교를 통해 정해지는 것은 '상대적 빈곤'입니다. 절대적 빈곤은 최저 생계비 미만의 상태를 의미합니다." },
+
+          // 5단원
+          { unit: 4, q: "진화론은 사회 변동이 반드시 발전과 향상을 의미한다고 보아 사회 퇴행이나 순환적 변화를 설명하기 어렵다는 한계가 있다.", a: "O", exp: "진화론은 모든 사회가 일직선상으로 발전한다고 보므로, 사회의 쇠퇴나 멸망, 순환적 과정을 설명하기 어렵습니다." },
+          { unit: 4, q: "근대화론은 서구화가 곧 근대화라고 보며, 전통적인 가치와 제도를 근대화의 저해 요인으로 본다.", a: "O", exp: "근대화론은 서구 사회의발전 모델을 보편적인 것으로 설정하고 전통 요소를 부정적으로 평가하는 경향이 있습니다." }
         ]
       },
       econ: {
         title: "경제",
-        units: ["1단원: 경제생활과 선택", "2단원: 시장과 경제 활동", "3단원: 국가와 세계 경제"],
+        units: [
+          "1단원: 경제생활과 선택",
+          "2단원: 시장과 경제 활동",
+          "3단원: 국가와 세계 경제",
+          "4단원: 자산 관리와 금융"
+        ],
         questions: [
-          { unit: 0, q: "매몰 비용은 이미 지출되어 회수할 수 없는 비용이므로, 합리적 선택을 할 때 반드시 고려해야 한다.", a: "X", exp: "매몰 비용은 회수 불가능한 비용이므로 합리적 의사결정 시 고려 대상에서 '제외'해야 합니다." },
-          { unit: 1, q: "대체재 관계에 있는 A재의 가격이 상승하면, B재의 수요 곡선은 오른쪽으로 이동한다.", a: "O", exp: "A재 가격 상승 → A재 수요량 감소 → 대체재인 B재의 수요 증가로 B재 수요 곡선이 우측 이동합니다." },
-          { unit: 1, q: "최고 가격제(가격 상한제)를 시행하면 시장에서 초과 공급 현상이 나타난다.", a: "X", exp: "최고 가격제는 균형 가격보다 낮은 수준에서 가격을 설정하므로 수요가 공급보다 많은 '초과 수요(공급 부족)'가 발생합니다." },
-          { unit: 2, q: "인플레이션이 발생하면 채권자(돈을 빌려준 사람)에게 유리하고 채무자에게 불리하다.", a: "X", exp: "인플레이션 시 화폐 가치가 하락하므로 채권자가 손해를 보고, 채무자가 이익을 얻습니다." }
+          // 1단원
+          { unit: 0, q: "매몰 비용은 이미 지출되어 회수할 수 없는 비용이므로, 합리적 선택을 할 때 반드시 고려해야 한다.", a: "X", exp: "매몰 비용은 회수할 수 없는 비용이므로 합리적 의사결정 시 반드시 고려 대상에서 '제외'해야 합니다." },
+          { unit: 0, q: "기회비용은 선택으로 인해 포기한 대안들 중 가장 가치가 큰 것의 가치만을 의미한다.", a: "O", exp: "기회비용은 명시적 비용 + 암묵적 비용이며, 포기한 대안이 여러 개일 경우 그 중 가치가 가장 큰 것 하나만을 의미합니다." },
+          { unit: 0, q: "자유재는 희소성이 없으나 경제재는 희소성이 존재하는 재화이다.", a: "O", exp: "자유재는 욕구에 비해 양이 많아 희소성이 없는 재화이고, 경제재는 희소성이 있어 대가를 지불해야 하는 재화입니다." },
+
+          // 2단원
+          { unit: 1, q: "대체재 관계에 있는 A재의 가격이 상승하면, B재의 수요 곡선은 오른쪽으로 이동한다.", a: "O", exp: "A재 가격 상승 → A재 수요량 감소 → 대체재 B재 수요 증가 → B재 수요 곡선 우측 이동합니다." },
+          { unit: 1, q: "최고 가격제(가격 상한제)를 시행하면 시장에서 초과 공급 현상이 나타난다.", a: "X", exp: "최고 가격제는 균형 가격보다 낮은 수준에서 가격을 통제하므로 초과 수요(공급 부족) 현상이 발생합니다." },
+          { unit: 1, q: "수요의 가격 탄력성이 완만할수록(탄력적일수록) 가격 변화율보다 수요량의 변화율이 크다.", a: "O", exp: "탄력적이라는 것은 가격 변화에 대해 수요량이 크게 반응(변화율이 더 큼)함을 뜻합니다." },
+          { unit: 1, q: "생산자 후생은 생산자가 실제 받은 금액에서 최소한 받고자 했던 금액을 뺀 차액이다.", a: "O", exp: "생산자 여유분(후생)은 시장 가격과 공급 곡선 사이의 면적으로 계산됩니다." },
+
+          // 3단원
+          { unit: 2, q: "실질 GDP는 생산량의 변화뿐만 아니라 물가 변동도 함께 반영하여 측정한다.", a: "X", exp: "물가 변동을 제외하고 순수한 생산량 변화만을 측정하는 것은 '실질 GDP'입니다. 명목 GDP가 물가 변동을 포함합니다." },
+          { unit: 2, q: "인플레이션이 발생하면 채권자(돈을 빌려준 사람)에게 유리하고 채무자에게 불리하다.", a: "X", exp: "인플레이션 시 화폐 가치가 하락하므로 채권자가 손해를 보고, 채무자가 이익을 얻습니다." },
+          { unit: 2, q: "확장적 재정 정책(정부 지출 확대, 감세)은 경기 침체기에 총수요를 증가시키기 위해 시행한다.", a: "O", exp: "경기 침체기에는 정부 지출을 늘리고 세금을 줄여 시장의 총수요를 늘리는 정책을 씁니다." },
+          { unit: 2, q: "비교 우위론에 따르면 한 국가가 두 재화 모두 절대 우위에 있더라도 무역을 통해 양국 모두 이익을 얻을 수 있다.", a: "O", exp: "리카도의 비교우위론에 따르면 기회비용이 더 작은 재화에 특화하여 교역하면 양국 모두 이익을 얻습니다." },
+
+          // 4단원
+          { unit: 3, q: "주식은 채권과 달리 회사에 대한 지분권을 나타내며, 원금 손실의 위험이 존재한다.", a: "O", exp: "주식은 배당과 시세차익을 기대할 수 있으나 원금 보장이 되지 않는 자기자본 증권입니다." },
+          { unit: 3, q: "예금자 보호 제도를 통해 금융기관당 1인당 원금과 이자를 합하여 최고 5천만 원까지 보호받을 수 있다.", a: "O", exp: "예금자보호법에 의해 각 금융기관별로 1인당 최고 5,000만원까지 보호받을 수 있습니다." }
         ]
       }
     };
 
-    // 상태 변수
     let currentSubject = '';
-    let currentMode = 'all'; // 'all' 또는 'unit'
-    let selectedUnitIndex = 0;
+    let currentMode = 'all';
     let timeLimit = 15;
     let activeQuestions = [];
     let currentIndex = 0;
@@ -310,18 +354,15 @@
     let timerInterval = null;
     let timeLeft = 0;
 
-    // 화면 전환
     function goToScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
     }
 
-    // 과목 선택
     function selectSubject(subject) {
       currentSubject = subject;
       document.getElementById('selected-subject-title').innerText = quizDB[subject].title + " 설정";
       
-      // 단원 드롭다운 초기화
       const selectEl = document.getElementById('unit-select');
       selectEl.innerHTML = '';
       quizDB[subject].units.forEach((u, idx) => {
@@ -334,7 +375,6 @@
       goToScreen('setting-screen');
     }
 
-    // 모드/단원 선택
     function selectMode(mode) {
       currentMode = mode;
       document.getElementById('mode-all').classList.toggle('selected', mode === 'all');
@@ -345,16 +385,13 @@
       selectMode('unit');
     }
 
-    // 시간 선택
     function selectTime(sec) {
       timeLimit = sec;
       document.getElementById('time-10').classList.toggle('selected', sec === 10);
       document.getElementById('time-15').classList.toggle('selected', sec === 15);
     }
 
-    // 퀴즈 시작
     function startQuiz() {
-      // 문제 필터링
       const allQs = quizDB[currentSubject].questions;
       if (currentMode === 'all') {
         activeQuestions = [...allQs];
@@ -364,11 +401,10 @@
       }
 
       if (activeQuestions.length === 0) {
-        alert("해당 단원에 아직 등록된 문제가 없습니다!");
+        alert("해당 단원에 문제 데이터가 없습니다!");
         return;
       }
 
-      // 문제 섞기
       activeQuestions.sort(() => Math.random() - 0.5);
       
       currentIndex = 0;
@@ -377,7 +413,6 @@
       loadQuestion();
     }
 
-    // 문제 로드
     function loadQuestion() {
       if (currentIndex >= activeQuestions.length) {
         endQuiz();
@@ -392,14 +427,13 @@
       startTimer();
     }
 
-    // 타이머
     function startTimer() {
       clearInterval(timerInterval);
       timeLeft = timeLimit;
       const timerBar = document.getElementById('timer-bar');
       timerBar.style.width = '100%';
 
-      const intervalStep = 100; // 0.1초마다 업데이트
+      const intervalStep = 100;
       const totalSteps = (timeLimit * 1000) / intervalStep;
       let currentStep = 0;
 
@@ -410,12 +444,11 @@
 
         if (currentStep >= totalSteps) {
           clearInterval(timerInterval);
-          submitAnswer(null); // 시간 초과
+          submitAnswer(null);
         }
       }, intervalStep);
     }
 
-    // 정답 제출
     function submitAnswer(userAnswer) {
       clearInterval(timerInterval);
       const q = activeQuestions[currentIndex];
@@ -445,14 +478,12 @@
       modal.classList.add('active');
     }
 
-    // 다음 문제
     function nextQuestion() {
       document.getElementById('feedback-modal').classList.remove('active');
       currentIndex++;
       loadQuestion();
     }
 
-    // 퀴즈 종료
     function endQuiz() {
       document.getElementById('final-score').innerText = score;
       document.getElementById('total-count').innerText = activeQuestions.length;
